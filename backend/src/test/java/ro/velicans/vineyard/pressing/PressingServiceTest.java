@@ -80,4 +80,27 @@ class PressingServiceTest {
         assertThatThrownBy(() -> service.record(batchId, req))
             .isInstanceOf(IllegalStateException.class);
     }
+
+    @Test
+    void delete_removesPressingAndResetsBatchStatus() {
+        UUID batchId = UUID.randomUUID();
+        Pressing p = new Pressing();
+        when(repo.findByBatchId(batchId)).thenReturn(Optional.of(p));
+
+        service.delete(batchId);
+
+        verify(repo).delete(p);
+        verify(batchService).updateStatus(batchId, BatchStatus.HARVESTED);
+    }
+
+    @Test
+    void delete_doesNothingWhenNoPressing() {
+        UUID batchId = UUID.randomUUID();
+        when(repo.findByBatchId(batchId)).thenReturn(Optional.empty());
+
+        service.delete(batchId);
+
+        verify(repo, never()).delete(any());
+        verify(batchService, never()).updateStatus(any(), any());
+    }
 }

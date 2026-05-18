@@ -48,6 +48,13 @@ public class PressingService {
         return repo.findByBatchId(batchId).map(this::toDto).orElse(null);
     }
 
+    public void delete(UUID batchId) {
+        repo.findByBatchId(batchId).ifPresent(p -> {
+            repo.delete(p);
+            batchService.updateStatus(batchId, BatchStatus.HARVESTED);
+        });
+    }
+
     private PressingDto toDto(Pressing p) {
         return new PressingDto(p.getId(), p.getBatch().getId(), p.getDate(), p.getMustLiters(), p.getYieldRatio());
     }

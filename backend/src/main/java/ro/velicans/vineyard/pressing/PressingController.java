@@ -22,4 +22,10 @@ public class PressingController {
     public PressingDto get(@PathVariable UUID batchId) {
         return service.findByBatchId(batchId);
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID batchId) {
+        service.delete(batchId);
+    }
 }
