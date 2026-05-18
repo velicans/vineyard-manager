@@ -1,6 +1,8 @@
 package ro.velicans.vineyard.bottling;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import ro.velicans.vineyard.batch.ProductionBatch;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -18,6 +20,7 @@ public class Bottling {
     private Integer bottleCount;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(columnDefinition = "bottle_volume")
     private BottleVolume bottleVolume;
 

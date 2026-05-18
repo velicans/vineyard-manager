@@ -1,6 +1,8 @@
 package ro.velicans.vineyard.batch;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import ro.velicans.vineyard.parcel.Parcel;
 import java.util.UUID;
 
@@ -16,6 +18,7 @@ public class ProductionBatch {
     private Integer year;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(columnDefinition = "batch_status")
     private BatchStatus status;
 
