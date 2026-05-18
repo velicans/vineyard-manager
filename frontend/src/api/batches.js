@@ -9,3 +9,6 @@ export const recordBottling = (batchId, data) => client.post(`/batches/${batchId
 export const getHarvest = (batchId) => client.get(`/batches/${batchId}/harvest`).then(r => r.data)
 export const getPressing = (batchId) => client.get(`/batches/${batchId}/pressing`).then(r => r.data)
 export const getBottling = (batchId) => client.get(`/batches/${batchId}/bottling`).then(r => r.data)
+export const deleteBatch = (id) => client.delete(`/batches/${id}`)
+export const deleteHarvest = (batchId) => client.delete(`/batches/${batchId}/harvest`)
+export const deletePressing = (batchId) => client.delete(`/batches/${batchId}/pressing`)
