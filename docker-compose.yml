@@ -1,0 +1,57 @@
+services:
+  vineyard-db:
+    image: postgres:16
+    container_name: vineyard-db
+    environment:
+      POSTGRES_DB: vineyard
+      POSTGRES_USER: vineyard
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - vineyard-db-data:/var/lib/postgresql/data
+    networks:
+      - vineyard-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vineyard"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  vineyard-api:
+    build: ./backend
+    container_name: vineyard-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://vineyard-db:5432/vineyard
+      SPRING_DATASOURCE_USERNAME: vineyard
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      vineyard-db:
+        condition: service_healthy
+    networks:
+      - vineyard-net
+
+  vineyard-ui:
+    build: ./frontend
+    container_name: vineyard-ui
+    depends_on:
+      - vineyard-api
+    networks:
+      - vineyard-net
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: vineyard-cloudflared
+    restart: unless-stopped
+    command: tunnel run vineyard-tunnel
+    volumes:
+      - ~/.cloudflared:/home/nonroot/.cloudflared
+    depends_on:
+      - vineyard-api
+      - vineyard-ui
+    networks:
+      - vineyard-net
+
+volumes:
+  vineyard-db-data:
+
+networks:
+  vineyard-net:
