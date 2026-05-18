@@ -1,12 +1,23 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { getBatches } from '../api/batches'
+import { getBatches, deleteBatch } from '../api/batches'
 
 export default function BatchList() {
+  const qc = useQueryClient()
   const { data: batches = [], isLoading } = useQuery({ queryKey: ['batches'], queryFn: getBatches })
   const [yearFilter, setYearFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteBatch,
+    onSuccess: () => qc.invalidateQueries(['batches']),
+  })
+
+  const handleDelete = (id, parcelName, year) => {
+    if (!window.confirm(`Ștergi lotul "${parcelName} — ${year}"? Această acțiune nu poate fi anulată.`)) return
+    deleteMutation.mutate(id)
+  }
 
   const filtered = batches
     .filter(b => !yearFilter || b.year === parseInt(yearFilter))
@@ -35,11 +46,20 @@ export default function BatchList() {
       </div>
       <div className="bg-white rounded-lg shadow divide-y">
         {filtered.map(b => (
-          <Link key={b.id} to={`/batches/${b.id}`} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
-            <span className="font-medium">{b.parcelName}</span>
-            <span className="text-gray-500">{b.year}</span>
-            <span className={`text-xs px-2 py-1 rounded-full ${statusColor(b.status)}`}>{b.status}</span>
-          </Link>
+          <div key={b.id} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+            <Link to={`/batches/${b.id}`} className="flex items-center gap-6 flex-1">
+              <span className="font-medium">{b.parcelName}</span>
+              <span className="text-gray-500">{b.year}</span>
+              <span className={`text-xs px-2 py-1 rounded-full ${statusColor(b.status)}`}>{b.status}</span>
+            </Link>
+            <button
+              onClick={() => handleDelete(b.id, b.parcelName, b.year)}
+              className="text-red-500 hover:text-red-700 text-sm px-3 py-1 border border-red-200 rounded hover:bg-red-50 ml-4"
+              disabled={deleteMutation.isPending}
+            >
+              Șterge
+            </button>
+          </div>
         ))}
         {filtered.length === 0 && <p className="px-4 py-3 text-gray-400">Niciun lot găsit.</p>}
       </div>
