@@ -22,4 +22,10 @@ public class ProductionBatchController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductionBatchDto create(@RequestBody ProductionBatchDto dto) { return service.create(dto); }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID id) {
+        service.delete(id);
+    }
 }

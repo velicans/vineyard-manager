@@ -2,7 +2,10 @@ package ro.velicans.vineyard.batch;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.velicans.vineyard.bottling.BottlingRepository;
+import ro.velicans.vineyard.harvest.HarvestRepository;
 import ro.velicans.vineyard.parcel.ParcelRepository;
+import ro.velicans.vineyard.pressing.PressingRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,10 +17,18 @@ public class ProductionBatchService {
 
     private final ProductionBatchRepository batchRepo;
     private final ParcelRepository parcelRepo;
+    private final HarvestRepository harvestRepo;
+    private final PressingRepository pressingRepo;
+    private final BottlingRepository bottlingRepo;
 
-    public ProductionBatchService(ProductionBatchRepository batchRepo, ParcelRepository parcelRepo) {
+    public ProductionBatchService(ProductionBatchRepository batchRepo, ParcelRepository parcelRepo,
+                                   HarvestRepository harvestRepo, PressingRepository pressingRepo,
+                                   BottlingRepository bottlingRepo) {
         this.batchRepo = batchRepo;
         this.parcelRepo = parcelRepo;
+        this.harvestRepo = harvestRepo;
+        this.pressingRepo = pressingRepo;
+        this.bottlingRepo = bottlingRepo;
     }
 
     public List<ProductionBatchDto> findAll() {
@@ -49,6 +60,14 @@ public class ProductionBatchService {
         ProductionBatch batch = findEntityById(batchId);
         batch.setStatus(status);
         batchRepo.save(batch);
+    }
+
+    public void delete(UUID batchId) {
+        findEntityById(batchId);
+        bottlingRepo.findByBatchId(batchId).ifPresent(bottlingRepo::delete);
+        pressingRepo.findByBatchId(batchId).ifPresent(pressingRepo::delete);
+        harvestRepo.findByBatchId(batchId).ifPresent(harvestRepo::delete);
+        batchRepo.deleteById(batchId);
     }
 
     private ProductionBatchDto toDto(ProductionBatch b) {
