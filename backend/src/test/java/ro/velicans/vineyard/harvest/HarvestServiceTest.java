@@ -70,4 +70,25 @@ class HarvestServiceTest {
         assertThatThrownBy(() -> service.record(batchId, req))
             .isInstanceOf(IllegalStateException.class);
     }
+
+    @Test
+    void delete_removesHarvestWhenExists() {
+        UUID batchId = UUID.randomUUID();
+        Harvest h = new Harvest();
+        when(repo.findByBatchId(batchId)).thenReturn(Optional.of(h));
+
+        service.delete(batchId);
+
+        verify(repo).delete(h);
+    }
+
+    @Test
+    void delete_doesNothingWhenNoHarvest() {
+        UUID batchId = UUID.randomUUID();
+        when(repo.findByBatchId(batchId)).thenReturn(Optional.empty());
+
+        service.delete(batchId);
+
+        verify(repo, never()).delete(any());
+    }
 }

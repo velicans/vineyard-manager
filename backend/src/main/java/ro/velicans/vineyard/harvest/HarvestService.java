@@ -38,6 +38,10 @@ public class HarvestService {
         return repo.findByBatchId(batchId).map(this::toDto).orElse(null);
     }
 
+    public void delete(UUID batchId) {
+        repo.findByBatchId(batchId).ifPresent(repo::delete);
+    }
+
     private HarvestDto toDto(Harvest h) {
         return new HarvestDto(h.getId(), h.getBatch().getId(), h.getDate(), h.getQuantityKg());
     }
