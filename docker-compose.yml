@@ -41,7 +41,7 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: vineyard-cloudflared
     restart: unless-stopped
-    command: tunnel run vineyard-tunnel
+    command: tunnel --config /home/nonroot/.cloudflared/config.yml run
     volumes:
       - ~/.cloudflared:/home/nonroot/.cloudflared
     depends_on:
