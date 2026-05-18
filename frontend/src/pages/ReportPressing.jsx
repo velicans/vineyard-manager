@@ -3,16 +3,16 @@ import { useQuery } from '@tanstack/react-query'
 import { getPressingReport } from '../api/reports'
 
 export default function ReportPressing() {
-  const [year, setYear] = useState(new Date().getFullYear())
+  const [year, setYear] = useState('')
   const { data = [], isLoading } = useQuery({
     queryKey: ['report', 'pressing', year],
-    queryFn: () => getPressingReport(year),
+    queryFn: () => getPressingReport(year || undefined),
   })
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Raport Stors</h1>
-      <input type="number" value={year} onChange={e => setYear(parseInt(e.target.value))} className="border rounded px-3 py-2 mb-4 w-24" />
+      <input type="number" placeholder="Toți anii" value={year} onChange={e => setYear(e.target.value)} className="border rounded px-3 py-2 mb-4 w-32" />
       {isLoading ? <p>Se încarcă...</p> : (
         <table className="w-full bg-white rounded-lg shadow text-sm">
           <thead className="bg-gray-100"><tr>
