@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:8080',
-      '/swagger-ui': 'http://localhost:8080',
-      '/v3': 'http://localhost:8080',
+      '/api': { target: 'http://localhost:8080', changeOrigin: true },
+      '/swagger-ui': { target: 'http://localhost:8080', changeOrigin: true },
+      '/v3': { target: 'http://localhost:8080', changeOrigin: true },
     }
   }
 })

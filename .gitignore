@@ -14,3 +14,21 @@ frontend/dist/
 .idea/
 *.iml
 .vscode/
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor temporary files
+*.swp
+*.swo
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+
+# Frontend env files
+frontend/.env*.local
