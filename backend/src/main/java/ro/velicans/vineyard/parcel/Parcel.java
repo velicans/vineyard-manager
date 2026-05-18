@@ -9,6 +9,7 @@ public class Parcel {
     private UUID id;
     private String name;
     private String grapeVariety;
+    @Column(name = "area_sq_m")
     private Integer areaSqM;
 
     public UUID getId() { return id; }
