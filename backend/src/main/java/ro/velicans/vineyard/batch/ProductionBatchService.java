@@ -1,12 +1,14 @@
 package ro.velicans.vineyard.batch;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.velicans.vineyard.parcel.ParcelRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+@Transactional
 @Service
 public class ProductionBatchService {
 

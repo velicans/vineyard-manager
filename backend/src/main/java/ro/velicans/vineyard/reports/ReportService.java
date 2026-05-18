@@ -1,6 +1,7 @@
 package ro.velicans.vineyard.reports;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.velicans.vineyard.bottling.BottleVolume;
 import ro.velicans.vineyard.bottling.Bottling;
 import ro.velicans.vineyard.bottling.BottlingRepository;
@@ -14,6 +15,7 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class ReportService {
 

@@ -1,12 +1,14 @@
 package ro.velicans.vineyard.harvest;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.velicans.vineyard.batch.BatchStatus;
 import ro.velicans.vineyard.batch.ProductionBatch;
 import ro.velicans.vineyard.batch.ProductionBatchService;
 
 import java.util.UUID;
 
+@Transactional
 @Service
 public class HarvestService {
 

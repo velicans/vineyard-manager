@@ -1,6 +1,7 @@
 package ro.velicans.vineyard.bottling;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.velicans.vineyard.batch.BatchStatus;
 import ro.velicans.vineyard.batch.ProductionBatch;
 import ro.velicans.vineyard.batch.ProductionBatchService;
@@ -8,6 +9,7 @@ import ro.velicans.vineyard.pressing.PressingRepository;
 
 import java.util.UUID;
 
+@Transactional
 @Service
 public class BottlingService {
 
