@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { recordPressing } from '../api/batches'
 
-export default function PressingForm({ batchId }) {
+export default function PressingForm({ batchId, batchYear }) {
   const qc = useQueryClient()
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(batchYear ? `${batchYear}-09-17` : '')
   const [mustLiters, setMustLiters] = useState('')
   const [error, setError] = useState(null)
 

@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { recordHarvest } from '../api/batches'
 
-export default function HarvestForm({ batchId }) {
+export default function HarvestForm({ batchId, batchYear }) {
   const qc = useQueryClient()
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(batchYear ? `${batchYear}-09-15` : '')
   const [quantityKg, setQuantityKg] = useState('')
   const [error, setError] = useState(null)
 

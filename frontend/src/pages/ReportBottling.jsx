@@ -8,13 +8,16 @@ export default function ReportBottling() {
     queryKey: ['report', 'bottling', year],
     queryFn: () => getBottlingReport(year || undefined),
   })
-
+  const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i)
   const volumeLabel = (v) => v === 'L075' ? '0.75 L' : '1.5 L'
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Raport Îmbuteliere</h1>
-      <input type="number" placeholder="Toți anii" value={year} onChange={e => setYear(e.target.value)} className="border rounded px-3 py-2 mb-4 w-32" />
+      <select value={year} onChange={e => setYear(e.target.value)} className="border rounded px-3 py-2 mb-4">
+        <option value="">Toți anii</option>
+        {years.map(y => <option key={y} value={y}>{y}</option>)}
+      </select>
       {isLoading ? <p>Se încarcă...</p> : (
         <table className="w-full bg-white rounded-lg shadow text-sm">
           <thead className="bg-gray-100"><tr>

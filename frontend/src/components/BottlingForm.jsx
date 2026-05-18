@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { recordBottling } from '../api/batches'
 
-export default function BottlingForm({ batchId }) {
+export default function BottlingForm({ batchId, batchYear }) {
   const qc = useQueryClient()
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(batchYear ? `${batchYear + 1}-04-15` : '')
   const [bottleCount, setBottleCount] = useState('')
   const [bottleVolume, setBottleVolume] = useState('L075')
   const [error, setError] = useState(null)

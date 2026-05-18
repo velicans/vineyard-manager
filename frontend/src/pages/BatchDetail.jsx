@@ -54,10 +54,10 @@ export default function BatchDetail() {
         onDeletePressing={handleDeletePressing}
       />
       <div className="bg-white rounded-lg shadow p-6">
-        {batch.status === 'HARVESTED' && !harvest && <HarvestForm batchId={id} />}
-        {batch.status === 'HARVESTED' && harvest && <PressingForm batchId={id} />}
-        {batch.status === 'PRESSED' && !pressing && <PressingForm batchId={id} />}
-        {batch.status === 'PRESSED' && pressing && <BottlingForm batchId={id} />}
+        {batch.status === 'HARVESTED' && !harvest && <HarvestForm batchId={id} batchYear={batch.year} />}
+        {batch.status === 'HARVESTED' && harvest && <PressingForm batchId={id} batchYear={batch.year} />}
+        {batch.status === 'PRESSED' && !pressing && <PressingForm batchId={id} batchYear={batch.year} />}
+        {batch.status === 'PRESSED' && pressing && <BottlingForm batchId={id} batchYear={batch.year} />}
         {batch.status === 'BOTTLED' && <p className="text-green-600 font-medium">Lot finalizat.</p>}
       </div>
     </div>
